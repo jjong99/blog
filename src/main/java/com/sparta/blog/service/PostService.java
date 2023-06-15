@@ -39,25 +39,27 @@ public class PostService {
     }
 
     @Transactional
-    public Long updatePost(Long id, PostRequestDto requestDto) {
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto) {
         Post post = findPost(id);
         if(post.getPassword().equals(requestDto.getPassword())) {
             post.update(requestDto);
         } else {
-            new IllegalArgumentException("비밀번호가 틀렸습니다.");
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
-        return id;
+        return new PostResponseDto(post);
     }
 
-    public Long deletePost(Long id, PostRequestDto requestDto) {
+    public String deletePost(Long id, PostRequestDto requestDto) {
+        String msg;
         Post post = findPost(id);
         if (post.getPassword().equals(requestDto.getPassword())) {
             postRepository.delete(post);
+            msg = "삭제 성공";
         } else {
-            new IllegalArgumentException("비밀번호가 틀렸습니다.");
+            throw new IllegalArgumentException("비밀번호가 틀렸습니다.");
         }
 
-        return id;
+        return msg;
     }
 
     public PostResponseDto getPost(Long id) {
