@@ -41,7 +41,7 @@ public class PostService {
     @Transactional
     public Long updatePost(Long id, PostRequestDto requestDto) {
         Post post = findPost(id);
-        if (post.getPassword() == requestDto.getPassword()) {
+        if(post.getPassword().equals(requestDto.getPassword())) {
             post.update(requestDto);
         } else {
             new IllegalArgumentException("비밀번호가 틀렸습니다.");
@@ -51,7 +51,7 @@ public class PostService {
 
     public Long deletePost(Long id, PostRequestDto requestDto) {
         Post post = findPost(id);
-        if (post.getPassword() == requestDto.getPassword()) {
+        if (post.getPassword().equals(requestDto.getPassword())) {
             postRepository.delete(post);
         } else {
             new IllegalArgumentException("비밀번호가 틀렸습니다.");
